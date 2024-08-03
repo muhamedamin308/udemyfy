@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "578793019473",
+    "project_id": "to-do-koin",
+    "storage_bucket": "to-do-koin.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:578793019473:android:248ed261e20ad654ec4070",
+        "android_client_info": {
+          "package_name": "com.example.courseskoinapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDhY_fCEtpUlTlDhNlyqZVDquLYhJP-8Mw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

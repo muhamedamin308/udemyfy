@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    android:background="@color/white"
+    android:elevation="4dp"
+    app:cardCornerRadius="8dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/rounded_borders"
+        android:foregroundTint="@color/white"
+        android:padding="6dp">
+
+
+        <ImageView
+            android:id="@+id/image_course"
+            android:layout_width="114dp"
+            android:layout_height="114dp"
+            android:background="@drawable/rounded_borders"
+            android:padding="10dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/online_education"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_course_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/bai_jamjuree_medium"
+            android:text="Spatial Modeling for Resources Framework (SMRF)"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/image_course"
+            app:layout_constraintTop_toTopOf="@id/image_course" />
+
+        <TextView
+            android:id="@+id/tv_course_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:background="@drawable/rectangle_border"
+            android:backgroundTint="@color/status"
+            android:fontFamily="@font/bai_jamjuree_medium"
+            android:paddingHorizontal="3dp"
+            android:text="Beta"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/tv_course_name" />
+
+        <TextView
+            android:id="@+id/tv_course_org"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:alpha="0.7"
+            android:fontFamily="@font/bai_jamjuree"
+            android:text="APHIS"
+            android:textColor="@color/black"
+            app:layout_constraintStart_toStartOf="@+id/tv_course_name"
+            app:layout_constraintTop_toBottomOf="@+id/tv_course_name" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>

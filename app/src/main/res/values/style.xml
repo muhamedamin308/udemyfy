@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/gray</item>
+        <item name="colorPrimaryDark">#000000</item> <!-- Black color for the status bar -->
+        <item name="colorAccent">#03DAC5</item>
+        <!-- Other theme attributes -->
+    </style>
+</resources>

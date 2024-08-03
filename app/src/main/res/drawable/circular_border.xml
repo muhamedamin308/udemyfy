@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="oval">
+
+    <!-- Define the solid color for the background if needed -->
+    <solid android:color="@android:color/transparent" />
+
+    <!-- Define the stroke for the border -->
+    <stroke
+        android:width="2dp"
+        android:color="@android:color/black" /> <!-- Change the color as needed -->
+
+
+    <!-- Define the padding if needed -->
+    <padding
+        android:bottom="1dp"
+        android:left="1dp"
+        android:right="1dp"
+        android:top="1dp" />
+</shape>
