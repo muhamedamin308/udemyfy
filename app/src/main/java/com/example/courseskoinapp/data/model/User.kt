@@ -7,10 +7,9 @@ package com.example.courseskoinapp.data.model
  */
 
 data class User(
-    val id: String,
     val name: String,
     val email: String,
-    val password: String,
-    val profilePhotoUrl: String?,
-    val courses: List<Course>
+    val password: String? = null,
+    val profilePhotoUrl: Int?,
+    val courses: List<Course>? = null
 )
