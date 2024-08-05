@@ -36,7 +36,7 @@ class CourseViewModel(
         viewModelScope.launch {
             _coursesState.emit(State.Loading())
             val courses = repository.getCourses()
-            if (courses != null && courses.isNotEmpty()) {
+            if (!courses.isNullOrEmpty()) {
                 _coursesState.emit(State.Success(courses))
             } else {
                 _coursesState.emit(State.Error("Failed to fetch courses"))
@@ -48,7 +48,7 @@ class CourseViewModel(
         viewModelScope.launch {
             authServices.getUserName({ name ->
                 _userName.value = name
-            }, { exception ->
+            }, {
                 _userName.value = null
             })
         }

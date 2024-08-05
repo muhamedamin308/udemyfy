@@ -13,6 +13,7 @@ import com.example.courseskoinapp.databinding.CourseListFragmentBinding
 import com.example.courseskoinapp.utils.State
 import com.example.courseskoinapp.utils.gone
 import com.example.courseskoinapp.utils.show
+import com.example.courseskoinapp.utils.visibleNavigation
 import kotlinx.coroutines.flow.collectLatest
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -40,7 +41,8 @@ class CourseListFragment : Fragment() {
 
         adapter.onCourseClicked = { course ->
             course?.let {
-                val action = CourseListFragmentDirections.actionCourseListFragmentToCourseDetailFragment(it)
+                val action =
+                    CourseListFragmentDirections.actionCourseListFragmentToCourseDetailFragment(it)
                 findNavController().navigate(action)
             } ?: run {
                 Log.e("CourseListFragment", "Clicked course is null")
@@ -74,6 +76,11 @@ class CourseListFragment : Fragment() {
                 LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
             adapter = this@CourseListFragment.adapter
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        visibleNavigation()
     }
 
 }

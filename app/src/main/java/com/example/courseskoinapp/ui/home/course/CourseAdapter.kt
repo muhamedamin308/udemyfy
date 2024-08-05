@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.courseskoinapp.data.model.Release
 import com.example.courseskoinapp.databinding.ItemCourseLayoutBinding
+import com.example.courseskoinapp.utils.Handlers
 
 /**
  * @author Muhamed Amin Hassan on 05,August,2024
@@ -22,6 +23,7 @@ class CourseAdapter :
                 tvCourseName.text = course.name
                 tvCourseOrg.text = course.organization
                 tvCourseStatus.text = course.status
+                clCardLayout.setBackgroundColor(Handlers.generateRandomColor())
             }
         }
     }

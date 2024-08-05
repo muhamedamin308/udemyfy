@@ -15,6 +15,6 @@ data class User(
     val name: String = "",
     val email: String = "",
     val password: String? = null,
-    val profilePhotoUrl: Int? = null,
+    val profilePhotoUrl: String? = null,
     val courses: @RawValue List<Course>? = null
 ) : Parcelable

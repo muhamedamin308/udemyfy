@@ -30,6 +30,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class SignupFragment : Fragment() {
     private lateinit var binding: SignupFragmentBinding
     private val signupViewModel: SignupViewModel by viewModel()
+    private var randomImage: String? = null
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -45,15 +46,23 @@ class SignupFragment : Fragment() {
             tvHaveAccount.setOnClickListener {
                 findNavController().navigate(R.id.action_signupFragment_to_loginFragment)
             }
+
+
             btnLogin.setOnClickListener {
+                val password = etPassword.text.toString().trim()
                 val user = User(
                     name = etName.text.toString().trim(),
                     email = etEmail.text.toString().trim(),
-                    password = etPassword.text.toString().trim(),
-                    profilePhotoUrl = Handlers.generateRandomAvatar()
+                    password = password,
+                    profilePhotoUrl = randomImage
                 )
-                val password = etPassword.text.toString().trim()
                 signupViewModel.createAccount(user, password)
+            }
+        }
+
+        lifecycleScope.launchWhenStarted {
+            signupViewModel.randomImage.collect {
+                randomImage = it
             }
         }
 

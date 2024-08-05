@@ -21,16 +21,5 @@ object Handlers {
         val randomIndex = colors.indices.random()
         return Color.parseColor(colors[randomIndex])
     }
-
-    private val avatars = arrayOf(
-        R.drawable.owl_1989690,
-        R.drawable.kangaroo_848559,
-        R.drawable.giraffe_1888365,
-        R.drawable.koala_3069172,
-        R.drawable.octopus_3034552,
-        R.drawable.seal_1137904
-    )
-
-    fun generateRandomAvatar(): Int = avatars.random()
 }
 

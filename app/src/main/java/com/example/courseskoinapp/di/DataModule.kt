@@ -14,6 +14,7 @@ import com.example.courseskoinapp.utils.Constants
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.firestore
+import com.google.firebase.storage.storage
 import okhttp3.OkHttpClient
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
@@ -25,10 +26,10 @@ import retrofit2.converter.gson.GsonConverterFactory
  * @see <a href="https://github.com/muhamedamin308">Muhamed's Github</a>,
  * Egypt, Cairo.
  */
-// authModule.kt
 val authModule = module {
     single { FirebaseAuth.getInstance() }
     single { Firebase.firestore }
+    single { Firebase.storage }
     single<SharedPreferences> {
         val application: Application = get()
         application.getSharedPreferences(
@@ -36,17 +37,16 @@ val authModule = module {
             Application.MODE_PRIVATE
         )
     }
-    single { FirebaseAuthServices(get(), get()) }
+    single { FirebaseAuthServices(get(), get(), get()) }
     viewModel { OnBoardingViewModel(get(), get()) }
     viewModel { LoginViewModel(get()) }
     viewModel { SignupViewModel(get()) }
 }
 
-// homeModule.kt
 val homeModule = module {
     single {
         Retrofit.Builder()
-            .baseUrl("https://www.usda.gov/sites/default/files/documents/") // Ensure this URL is correct
+            .baseUrl("https://www.usda.gov/sites/default/files/documents/")
             .addConverterFactory(GsonConverterFactory.create())
             .client(OkHttpClient.Builder().build())
             .build()

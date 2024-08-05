@@ -5,7 +5,10 @@ import com.example.courseskoinapp.utils.Constants
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.storage.FirebaseStorage
+import kotlinx.coroutines.tasks.await
 import org.koin.core.component.KoinComponent
+import kotlin.random.Random
 
 /**
  * @author Muhamed Amin Hassan on 03,August,2024
@@ -14,7 +17,8 @@ import org.koin.core.component.KoinComponent
  */
 class FirebaseAuthServices(
     private val auth: FirebaseAuth,
-    private val store: FirebaseFirestore
+    private val store: FirebaseFirestore,
+    private val storage: FirebaseStorage
 ) : KoinComponent {
 
     fun createAccount(
@@ -49,7 +53,31 @@ class FirebaseAuthServices(
 
     fun isUserLoggedIn(): Boolean = auth.currentUser != null
 
-    fun getUserProfile(
+    fun getUserName(onSuccess: (String) -> Unit, onFailure: (Exception) -> Unit) {
+        getUserProfile({ user ->
+            onSuccess(user.name)
+        }, { exception ->
+            onFailure(exception)
+        })
+    }
+
+    suspend fun generateRandomProfilePicture(): String? {
+        val reference = storage.reference.child("profile_images")
+        return try{
+            val result = reference.listAll().await()
+            val images = result.items
+            if (images.isNotEmpty()) {
+                val randomImage = images[Random.nextInt(images.size)]
+                randomImage.downloadUrl.await().toString()
+            } else {
+                null
+            }
+        } catch (e: Exception) {
+            null
+        }
+    }
+
+    private fun getUserProfile(
         onSuccess: (User) -> Unit,
         onFailure: (Exception) -> Unit
     ) {
@@ -70,15 +98,6 @@ class FirebaseAuthServices(
         } else {
             onFailure(Exception("No authenticated user"))
         }
-    }
-
-
-    fun getUserName(onSuccess: (String) -> Unit, onFailure: (Exception) -> Unit) {
-        getUserProfile({ user ->
-            onSuccess(user.name)
-        }, { exception ->
-            onFailure(exception)
-        })
     }
 
 
