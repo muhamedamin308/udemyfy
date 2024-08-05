@@ -2,7 +2,7 @@ package com.example.courseskoinapp.ui.auth.signup
 
 import androidx.lifecycle.ViewModel
 import com.example.courseskoinapp.data.model.User
-import com.example.courseskoinapp.data.source.services.FirebaseAuthServices
+import com.example.courseskoinapp.data.services.FirebaseAuthServices
 import com.example.courseskoinapp.utils.RegisterFieldState
 import com.example.courseskoinapp.utils.RegisterValidation
 import com.example.courseskoinapp.utils.State

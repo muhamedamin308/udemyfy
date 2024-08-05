@@ -18,8 +18,13 @@
     </fragment>
     <fragment
         android:id="@+id/courseDetailFragment"
-        android:name="com.example.courseskoinapp.ui.home.course.CourseDetailFragment"
-        android:label="CourseDetailFragment" />
+        android:name="com.example.courseskoinapp.ui.home.course.process.CourseDetailFragment"
+        android:label="CourseDetailFragment" >
+        <argument
+            android:name="course"
+            app:argType="com.example.courseskoinapp.data.model.Release"
+            app:nullable="true"/>
+    </fragment>
     <fragment
         android:id="@+id/profileFragment"
         android:name="com.example.courseskoinapp.ui.home.profile.ProfileFragment"

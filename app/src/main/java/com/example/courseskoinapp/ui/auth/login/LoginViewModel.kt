@@ -2,7 +2,7 @@ package com.example.courseskoinapp.ui.auth.login
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.courseskoinapp.data.source.services.FirebaseAuthServices
+import com.example.courseskoinapp.data.services.FirebaseAuthServices
 import com.example.courseskoinapp.utils.State
 import com.google.firebase.auth.FirebaseUser
 import kotlinx.coroutines.flow.MutableSharedFlow

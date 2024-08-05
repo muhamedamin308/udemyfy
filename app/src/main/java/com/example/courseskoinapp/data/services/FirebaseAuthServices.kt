@@ -1,4 +1,4 @@
-package com.example.courseskoinapp.data.source.services
+package com.example.courseskoinapp.data.services
 
 import com.example.courseskoinapp.data.model.User
 import com.example.courseskoinapp.utils.Constants
@@ -6,7 +6,6 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
 import org.koin.core.component.KoinComponent
-import org.koin.core.component.inject
 
 /**
  * @author Muhamed Amin Hassan on 03,August,2024
@@ -16,7 +15,7 @@ import org.koin.core.component.inject
 class FirebaseAuthServices(
     private val auth: FirebaseAuth,
     private val store: FirebaseFirestore
-): KoinComponent {
+) : KoinComponent {
 
     fun createAccount(
         user: User,
@@ -49,6 +48,39 @@ class FirebaseAuthServices(
     }
 
     fun isUserLoggedIn(): Boolean = auth.currentUser != null
+
+    fun getUserProfile(
+        onSuccess: (User) -> Unit,
+        onFailure: (Exception) -> Unit
+    ) {
+        val userId = auth.currentUser?.uid
+        if (userId != null) {
+            store.collection(Constants.Collections.USER_COLLECTION).document(userId).get()
+                .addOnSuccessListener { documentSnapshot ->
+                    val user = documentSnapshot.toObject(User::class.java)
+                    if (user != null) {
+                        onSuccess(user)
+                    } else {
+                        onFailure(Exception("User profile not found"))
+                    }
+                }
+                .addOnFailureListener { exception ->
+                    onFailure(exception)
+                }
+        } else {
+            onFailure(Exception("No authenticated user"))
+        }
+    }
+
+
+    fun getUserName(onSuccess: (String) -> Unit, onFailure: (Exception) -> Unit) {
+        getUserProfile({ user ->
+            onSuccess(user.name)
+        }, { exception ->
+            onFailure(exception)
+        })
+    }
+
 
     private fun saveUserProfile(
         userId: String,

@@ -18,8 +18,8 @@
 
         <ImageView
             android:id="@+id/image_course"
-            android:layout_width="114dp"
-            android:layout_height="114dp"
+            android:layout_width="120dp"
+            android:layout_height="0dp"
             android:background="@drawable/rounded_borders"
             android:padding="10dp"
             android:scaleType="fitCenter"
@@ -35,12 +35,13 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:fontFamily="@font/bai_jamjuree_medium"
-            android:text="Spatial Modeling for Resources Framework (SMRF)"
+            android:text="Fast and robust curve sk…world elongated objects"
             android:textColor="@color/black"
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/image_course"
-            app:layout_constraintTop_toTopOf="@id/image_course" />
+            app:layout_constraintTop_toTopOf="@id/image_course"
+            app:layout_constraintBottom_toTopOf="@id/guideline"/>
 
         <TextView
             android:id="@+id/tv_course_status"
@@ -56,6 +57,16 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="@+id/tv_course_name" />
 
+        <View
+            android:id="@+id/guideline"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginHorizontal="30dp"
+            android:background="@color/black"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/image_course"
+            app:layout_constraintTop_toBottomOf="@id/tv_course_name" />
+
         <TextView
             android:id="@+id/tv_course_org"
             android:layout_width="wrap_content"
@@ -65,7 +76,8 @@
             android:text="APHIS"
             android:textColor="@color/black"
             app:layout_constraintStart_toStartOf="@+id/tv_course_name"
-            app:layout_constraintTop_toBottomOf="@+id/tv_course_name" />
+            app:layout_constraintTop_toBottomOf="@+id/guideline"
+            app:layout_constraintBottom_toTopOf="@id/tv_course_status"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.cardview.widget.CardView>

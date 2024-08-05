@@ -3,7 +3,7 @@ package com.example.courseskoinapp.ui.auth.onboard
 import android.content.SharedPreferences
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.courseskoinapp.data.source.services.FirebaseAuthServices
+import com.example.courseskoinapp.data.services.FirebaseAuthServices
 import com.example.courseskoinapp.utils.Constants
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
