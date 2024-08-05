@@ -3,8 +3,8 @@ package com.example.courseskoinapp.ui.auth.onboard
 import android.content.SharedPreferences
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.courseskoinapp.data.source.services.FirebaseAuthServices
 import com.example.courseskoinapp.utils.Constants
-import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -17,7 +17,7 @@ import kotlinx.coroutines.launch
 
 class OnBoardingViewModel(
     private val sharedPreferences: SharedPreferences,
-    private val auth: FirebaseAuth
+    private val authServices: FirebaseAuthServices
 ) : ViewModel() {
     private val _stateFlow = MutableStateFlow(0)
     val stateFlow = _stateFlow.asStateFlow()
@@ -27,8 +27,7 @@ class OnBoardingViewModel(
             Constants.SHARED_PREFERENCES_KEY,
             false
         )
-        val user = auth.currentUser
-        if (user != null) {
+        if (authServices.isUserLoggedIn()) {
             viewModelScope.launch { _stateFlow.emit(Constants.HOME_ACTIVITY) }
         } else if (isStarted) {
             viewModelScope.launch { _stateFlow.emit(Constants.SIGNUP_ACCOUNT) }

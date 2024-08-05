@@ -2,6 +2,7 @@ package com.example.courseskoinapp.di
 
 import android.app.Application
 import android.content.SharedPreferences
+import com.example.courseskoinapp.data.source.services.FirebaseAuthServices
 import com.example.courseskoinapp.ui.auth.login.LoginViewModel
 import com.example.courseskoinapp.ui.auth.onboard.OnBoardingViewModel
 import com.example.courseskoinapp.ui.auth.signup.SignupViewModel
@@ -27,7 +28,8 @@ val appModule = module {
             Application.MODE_PRIVATE
         )
     }
+    single { FirebaseAuthServices(get(), get()) }
     viewModel { OnBoardingViewModel(get(), get()) }
     viewModel { LoginViewModel(get()) }
-    viewModel { SignupViewModel(get(), get()) }
+    viewModel { SignupViewModel(get()) }
 }

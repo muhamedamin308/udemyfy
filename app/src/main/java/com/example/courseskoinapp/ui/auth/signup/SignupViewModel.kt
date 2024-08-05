@@ -2,14 +2,12 @@ package com.example.courseskoinapp.ui.auth.signup
 
 import androidx.lifecycle.ViewModel
 import com.example.courseskoinapp.data.model.User
-import com.example.courseskoinapp.utils.Constants
+import com.example.courseskoinapp.data.source.services.FirebaseAuthServices
 import com.example.courseskoinapp.utils.RegisterFieldState
 import com.example.courseskoinapp.utils.RegisterValidation
 import com.example.courseskoinapp.utils.State
 import com.example.courseskoinapp.utils.validateEmail
 import com.example.courseskoinapp.utils.validatePassword
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -22,8 +20,7 @@ import kotlinx.coroutines.runBlocking
  * Egypt, Cairo.
  */
 class SignupViewModel(
-    private val auth: FirebaseAuth,
-    private val store: FirebaseFirestore
+    private val authServices: FirebaseAuthServices
 ) : ViewModel() {
     private val _signupState =
         MutableStateFlow<State<User>>(State.Ideal())
@@ -35,30 +32,17 @@ class SignupViewModel(
         val isUserValid = validateUser(user, password)
         if (isUserValid) {
             runBlocking { _signupState.emit(State.Loading()) }
-            auth.createUserWithEmailAndPassword(user.email, password)
-                .addOnSuccessListener {
-                    it?.user?.let { firebaseUser ->
-                        saveUserDetails(firebaseUser.uid, user)
-                    }
-                }.addOnFailureListener {
-                    _signupState.value = State.Error(it.message.toString())
-                }
+            authServices.createAccount(user, password, onSuccess = {
+                _signupState.value = State.Success(user)
+            }, onFailure = {
+                _signupState.value = State.Error(it.message.toString())
+            })
         } else {
             val registerFieldState = RegisterFieldState(
                 validateEmail(user.email), validatePassword(password)
             )
             runBlocking { _registerValidate.send(registerFieldState) }
         }
-    }
-
-
-    private fun saveUserDetails(userId: String, user: User) {
-        store.collection(Constants.Collections.USER_COLLECTION).document(userId).set(user)
-            .addOnSuccessListener {
-                _signupState.value = State.Success(user)
-            }.addOnFailureListener {
-                _signupState.value = State.Error(it.message.toString())
-            }
     }
 
     private fun validateUser(user: User, password: String): Boolean {
@@ -68,3 +52,7 @@ class SignupViewModel(
                 && passwordValidate is RegisterValidation.Success
     }
 }
+
+
+
+

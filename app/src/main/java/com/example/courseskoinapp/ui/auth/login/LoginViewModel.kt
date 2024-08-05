@@ -2,8 +2,8 @@ package com.example.courseskoinapp.ui.auth.login
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.courseskoinapp.data.source.services.FirebaseAuthServices
 import com.example.courseskoinapp.utils.State
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -15,23 +15,21 @@ import kotlinx.coroutines.launch
  * Egypt, Cairo.
  */
 class LoginViewModel(
-    private val auth: FirebaseAuth
+    private val authServices: FirebaseAuthServices
 ) : ViewModel() {
     private val _loginState = MutableSharedFlow<State<FirebaseUser>>()
     val loginState = _loginState.asSharedFlow()
 
     fun login(email: String, password: String) {
         viewModelScope.launch { _loginState.emit(State.Loading()) }
-        auth.signInWithEmailAndPassword(email, password).addOnSuccessListener {
+        authServices.login(email, password, onSuccess = {
             viewModelScope.launch {
-                it?.user?.let { user ->
-                    _loginState.emit(State.Success(user))
-                }
+                _loginState.emit(State.Success(it))
             }
-        }.addOnFailureListener {
+        }, onFailure = {
             viewModelScope.launch {
                 _loginState.emit(State.Error(it.message.toString()))
             }
-        }
+        })
     }
 }
