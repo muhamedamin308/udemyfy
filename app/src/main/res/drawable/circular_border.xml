@@ -2,9 +2,6 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
     android:shape="oval">
 
-    <!-- Define the solid color for the background if needed -->
-    <solid android:color="@android:color/transparent" />
-
     <!-- Define the stroke for the border -->
     <stroke
         android:width="2dp"

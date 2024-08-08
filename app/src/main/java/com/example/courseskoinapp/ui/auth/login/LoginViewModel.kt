@@ -22,14 +22,11 @@ class LoginViewModel(
 
     fun login(email: String, password: String) {
         viewModelScope.launch { _loginState.emit(State.Loading()) }
-        authServices.login(email, password, onSuccess = {
-            viewModelScope.launch {
-                _loginState.emit(State.Success(it))
-            }
-        }, onFailure = {
-            viewModelScope.launch {
-                _loginState.emit(State.Error(it.message.toString()))
-            }
-        })
+        authServices.login(email, password) { firebaseUser, exception ->
+            if (exception == null)
+                viewModelScope.launch { _loginState.emit(State.Success(firebaseUser!!)) }
+            else
+                viewModelScope.launch { _loginState.emit(State.Error(exception.message.toString())) }
+        }
     }
 }

@@ -46,11 +46,12 @@ class CourseViewModel(
 
     private fun fetchUserName() {
         viewModelScope.launch {
-            authServices.getUserName({ name ->
-                _userName.value = name
-            }, {
-                _userName.value = null
-            })
+            authServices.getUserProfile { user, exception ->
+                if (exception == null)
+                    _userName.value = user?.name
+                else
+                    _userName.value = null
+            }
         }
     }
 }

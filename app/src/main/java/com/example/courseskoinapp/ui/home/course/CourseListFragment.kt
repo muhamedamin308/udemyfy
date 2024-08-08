@@ -10,6 +10,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.courseskoinapp.databinding.CourseListFragmentBinding
+import com.example.courseskoinapp.ui.home.watchlater.WatchLaterFragmentDirections
 import com.example.courseskoinapp.utils.State
 import com.example.courseskoinapp.utils.gone
 import com.example.courseskoinapp.utils.show
@@ -31,6 +32,7 @@ class CourseListFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+//        visibleNavigation()
         binding = CourseListFragmentBinding.inflate(inflater, container, false)
         return binding.root
     }

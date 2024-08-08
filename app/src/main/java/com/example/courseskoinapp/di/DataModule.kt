@@ -4,12 +4,16 @@ import android.app.Application
 import android.content.SharedPreferences
 import com.example.courseskoinapp.data.services.CourseApiService
 import com.example.courseskoinapp.data.services.FirebaseAuthServices
+import com.example.courseskoinapp.data.services.FirebaseDatabaseService
 import com.example.courseskoinapp.repo.CourseRepository
 import com.example.courseskoinapp.repo.CourseRepositoryImpl
 import com.example.courseskoinapp.ui.auth.login.LoginViewModel
 import com.example.courseskoinapp.ui.auth.onboard.OnBoardingViewModel
 import com.example.courseskoinapp.ui.auth.signup.SignupViewModel
 import com.example.courseskoinapp.ui.home.course.CourseViewModel
+import com.example.courseskoinapp.ui.home.course.process.CourseDetailViewModel
+import com.example.courseskoinapp.ui.home.profile.ProfileViewModel
+import com.example.courseskoinapp.ui.home.watchlater.WatchLaterViewModel
 import com.example.courseskoinapp.utils.Constants
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
@@ -38,9 +42,13 @@ val authModule = module {
         )
     }
     single { FirebaseAuthServices(get(), get(), get()) }
+    single { FirebaseDatabaseService(get(), get()) }
     viewModel { OnBoardingViewModel(get(), get()) }
     viewModel { LoginViewModel(get()) }
     viewModel { SignupViewModel(get()) }
+    viewModel { ProfileViewModel(get()) }
+    viewModel { CourseDetailViewModel(get()) }
+    viewModel { WatchLaterViewModel(get(), get()) }
 }
 
 val homeModule = module {

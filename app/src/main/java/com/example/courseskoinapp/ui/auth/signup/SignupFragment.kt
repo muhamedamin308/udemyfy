@@ -12,7 +12,6 @@ import androidx.navigation.fragment.findNavController
 import com.example.courseskoinapp.R
 import com.example.courseskoinapp.data.model.User
 import com.example.courseskoinapp.databinding.SignupFragmentBinding
-import com.example.courseskoinapp.utils.Handlers
 import com.example.courseskoinapp.utils.RegisterValidation
 import com.example.courseskoinapp.utils.State
 import com.example.courseskoinapp.utils.gone
@@ -53,7 +52,6 @@ class SignupFragment : Fragment() {
                 val user = User(
                     name = etName.text.toString().trim(),
                     email = etEmail.text.toString().trim(),
-                    password = password,
                     profilePhotoUrl = randomImage
                 )
                 signupViewModel.createAccount(user, password)

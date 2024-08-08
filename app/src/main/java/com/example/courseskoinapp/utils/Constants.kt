@@ -16,7 +16,7 @@ object Constants {
 
     // User Paths
     data object Collections {
-        const val USER_COLLECTION = "user"
+        const val USER_COLLECTION = "Users"
         const val WATCH_LATER_COLLECTION = "watch_later"
     }
 }

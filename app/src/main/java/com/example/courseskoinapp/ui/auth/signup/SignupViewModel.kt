@@ -44,11 +44,12 @@ class SignupViewModel(
         val isUserValid = validateUser(user, password)
         if (isUserValid) {
             runBlocking { _signupState.emit(State.Loading()) }
-            authServices.createAccount(user, password, onSuccess = {
-                _signupState.value = State.Success(user)
-            }, onFailure = {
-                _signupState.value = State.Error(it.message.toString())
-            })
+            authServices.createAccount(user, password) { newUser, exception ->
+                if (exception == null)
+                    _signupState.value = State.Success(newUser!!)
+                else
+                    _signupState.value = State.Error(exception.message.toString())
+            }
         } else {
             val registerFieldState = RegisterFieldState(
                 validateEmail(user.email), validatePassword(password)
@@ -57,7 +58,7 @@ class SignupViewModel(
         }
     }
 
-    suspend fun generateRandomImage(): String? {
+    private suspend fun generateRandomImage(): String? {
         return try {
             authServices.generateRandomProfilePicture()
         } catch (e: Exception) {

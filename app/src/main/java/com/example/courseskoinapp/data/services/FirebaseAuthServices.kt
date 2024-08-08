@@ -24,16 +24,15 @@ class FirebaseAuthServices(
     fun createAccount(
         user: User,
         password: String,
-        onSuccess: () -> Unit,
-        onFailure: (Exception) -> Unit
+        onAction: (User?, Exception?) -> Unit
     ) {
         auth.createUserWithEmailAndPassword(user.email, password)
             .addOnSuccessListener {
                 it?.user?.let { firebaseUser ->
-                    saveUserProfile(firebaseUser.uid, user, onSuccess, onFailure)
+                    saveUserProfile(firebaseUser.uid, user, onAction)
                 }
             }.addOnFailureListener {
-                onFailure(it)
+                onAction(null, it)
             }
     }
 
@@ -41,29 +40,19 @@ class FirebaseAuthServices(
     fun login(
         email: String,
         password: String,
-        onSuccess: (FirebaseUser) -> Unit,
-        onFailure: (Exception) -> Unit
+        onAction: (FirebaseUser?, Exception?) -> Unit
     ) {
         auth.signInWithEmailAndPassword(email, password)
             .addOnSuccessListener {
-                it?.user?.let { user -> onSuccess(user) }
-            }
-            .addOnFailureListener { onFailure(it) }
+                it?.user?.let { user -> onAction(user, null) }
+            }.addOnFailureListener { onAction(null, it) }
     }
 
     fun isUserLoggedIn(): Boolean = auth.currentUser != null
 
-    fun getUserName(onSuccess: (String) -> Unit, onFailure: (Exception) -> Unit) {
-        getUserProfile({ user ->
-            onSuccess(user.name)
-        }, { exception ->
-            onFailure(exception)
-        })
-    }
-
     suspend fun generateRandomProfilePicture(): String? {
         val reference = storage.reference.child("profile_images")
-        return try{
+        return try {
             val result = reference.listAll().await()
             val images = result.items
             if (images.isNotEmpty()) {
@@ -77,9 +66,8 @@ class FirebaseAuthServices(
         }
     }
 
-    private fun getUserProfile(
-        onSuccess: (User) -> Unit,
-        onFailure: (Exception) -> Unit
+    fun getUserProfile(
+        onAction: (User?, Exception?) -> Unit
     ) {
         val userId = auth.currentUser?.uid
         if (userId != null) {
@@ -87,29 +75,29 @@ class FirebaseAuthServices(
                 .addOnSuccessListener { documentSnapshot ->
                     val user = documentSnapshot.toObject(User::class.java)
                     if (user != null) {
-                        onSuccess(user)
+                        onAction(user, null)
                     } else {
-                        onFailure(Exception("User profile not found"))
+                        onAction(null, Exception("User profile not found"))
                     }
                 }
                 .addOnFailureListener { exception ->
-                    onFailure(exception)
+                    onAction(null, exception)
                 }
         } else {
-            onFailure(Exception("No authenticated user"))
+            onAction(null, Exception("No authenticated user"))
         }
     }
 
+    fun logout() = auth.signOut()
 
     private fun saveUserProfile(
         userId: String,
         user: User,
-        onSuccess: () -> Unit,
-        onFailure: (Exception) -> Unit
+        onAction: (User?, Exception?) -> Unit
     ) {
         store.collection(Constants.Collections.USER_COLLECTION).document(userId).set(user)
-            .addOnSuccessListener { onSuccess() }
-            .addOnFailureListener { onFailure(it) }
+            .addOnSuccessListener { onAction(user, null) }
+            .addOnFailureListener { onAction(null, it) }
     }
 
 }

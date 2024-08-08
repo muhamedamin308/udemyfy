@@ -9,13 +9,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.courseskoinapp.databinding.CourseDetailFragmentBinding
+import com.example.courseskoinapp.utils.State
 import com.example.courseskoinapp.utils.gone
 import com.example.courseskoinapp.utils.invisibleNavigation
 import com.example.courseskoinapp.utils.show
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 /**
  * @author Muhamed Amin Hassan on 03,August,2024
@@ -27,6 +30,7 @@ class CourseDetailFragment : Fragment() {
     private val args: CourseDetailFragmentArgs by navArgs()
     private val tagsAdapter by lazy { CourseOneWordAdapter() }
     private val languagesAdapter by lazy { CourseOneWordAdapter() }
+    private val viewModel by viewModel<CourseDetailViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -48,6 +52,7 @@ class CourseDetailFragment : Fragment() {
                 arrowBack.setOnClickListener { findNavController().navigateUp() }
                 tvCourseName.text = course.name
                 tvCourseDescription.text = course.description
+                tvCourseOrg.text = course.organization
                 imageSendEmail.setOnClickListener {
                     course.contact.email?.let { it1 -> sendEmail(it1) }
                 }
@@ -81,6 +86,17 @@ class CourseDetailFragment : Fragment() {
                 tvCreatedDate.text = course.date.created ?: "N/A"
                 tvLastModifiedDate.text = course.date.lastModified ?: "N/A"
             } ?: run { Log.e("CourseDetailFragment", "Course argument is null") }
+
+            btnWatchLater.setOnClickListener {
+                course?.let {
+                    viewModel.addCourseToWatchLater(course)
+                    Toast.makeText(
+                        requireContext(),
+                        "Added to watch later successfully",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
         }
         course?.let {
             course.languages.let {
@@ -94,6 +110,21 @@ class CourseDetailFragment : Fragment() {
                     binding.tvTagsNothing.gone()
                     tagsAdapter.differ.submitList(it)
                 } else binding.tvTagsNothing.show()
+            }
+        }
+
+        lifecycleScope.launchWhenStarted {
+            viewModel.watchLaterCourse.collect {
+                when (it) {
+                    is State.Error -> {
+                        binding.progressBarCourses.gone()
+                        Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
+                    }
+
+                    is State.Ideal -> Unit
+                    is State.Loading -> binding.progressBarCourses.show()
+                    is State.Success -> binding.progressBarCourses.gone()
+                }
             }
         }
     }
